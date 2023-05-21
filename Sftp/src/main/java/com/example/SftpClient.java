@@ -6,6 +6,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.Security;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class SftpClient {
@@ -34,6 +35,11 @@ public class SftpClient {
         try {
             JSch jsch = new JSch();
             jsch.setKnownHosts("~/.ssh/known_hosts");
+            // none of the algorithms supported by jsch
+            // programatically enable sha256:
+            Properties config = new Properties();
+            config.put("kex", "diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256");
+
             System.out.println("Creating jsch Session...");
             jschSession = jsch.getSession(USERNAME, REMOTE_HOST, REMOTE_PORT);
 
@@ -42,6 +48,7 @@ public class SftpClient {
 
             // authenticate using password
             jschSession.setPassword(PASSWORD);
+            jschSession.setConfig(config);
             // 10 seconds session timeout
             jschSession.connect(SESSION_TIMEOUT);
             System.out.println("Opening sftp channel...");
