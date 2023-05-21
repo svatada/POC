@@ -14,6 +14,10 @@
     </properties>
 
     <dependencies>
+        <!--JSch (as of 0.1.55) does not support any of those KEX algorithms.
+            You will have to have the server support some of the algorithms that JSch supports
+            or switch to another SSH client library.
+         -->
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
